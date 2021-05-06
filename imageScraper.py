@@ -45,12 +45,12 @@ def img_scraper():
         if not re.search('.svg', url) and not re.search('/footer/', url) and not re.search('CentralAutoLogin', url):
             image_urls.append(url)
         if img_count == 1 and len(image_urls) == 1:
-            return url
+            return jsonify(images=url)
 
     if len(image_urls) == 0:                                    # no images on page
         return "Error: No images on Wikipedia page."
     else:
-        return jsonify(image_urls)
+        return jsonify(images=image_urls)
 
 
 if __name__ == '__main__':
