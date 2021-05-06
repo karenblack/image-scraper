@@ -1,1 +1,1 @@
-web: gunicorn --bind 0.0.0.0:$PORT imageScraper:app
+web: uwsgi uwsgi.ini
