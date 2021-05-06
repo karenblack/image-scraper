@@ -1,1 +1,1 @@
-web: gunicorn imageScraper:app
+web: gunicorn --bind 0.0.0.0:$PORT imageScraper:app
