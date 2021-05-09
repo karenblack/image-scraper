@@ -23,7 +23,7 @@ def img_scraper():
     if 'title' in request.args:
         title = request.args['title']
     else:
-        return jsonify(noTitleError="Error: No Wikipedia page title provided."), 400
+        return jsonify(noTitleError="Error: No Wikipedia page title provided.")
 
     # check if only returning first image, set count variable to 1
     if 'ct' in request.args:
@@ -40,7 +40,11 @@ def img_scraper():
     image_urls = []  # empty list to store scraped URLs
 
     wiki_page = 'https://en.wikipedia.org/wiki/' + title        # wiki page URL to scrape
-    htmldata = requests.get(wiki_page).text                     # query website and return html
+    try:
+        htmldata = requests.get(wiki_page).text                # query website and return html
+    except:
+        return jsonify(urlError="invalid Wikipedia page title")
+    
     soup = BeautifulSoup(htmldata, 'html.parser')               # parse html
 
     for item in soup.find_all('img'):
