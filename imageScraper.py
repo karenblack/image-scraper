@@ -27,9 +27,9 @@ def img_scraper():
 
     # check if only returning first image, set count variable to 1
     if 'ct' in request.args:
-        if 'ct' == 'main':
+        if request.args['ct'] == 'main':
             img_count = 1               # only obtaining main Wiki page image
-        elif 'ct' == 'all':
+        elif request.args['ct'] == 'all':
             img_count = None            # null variable to obtain all images
         else:
             return jsonify(noImageCt="'ct' parameter invalid value")
