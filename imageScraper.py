@@ -57,7 +57,7 @@ def img_scraper():
             return jsonify(images=url)
 
     if len(image_urls) == 0:                                    # no images on page
-        return jsonify(noImagesError="No images on Wikipedia page.")
+        return jsonify(noImagesError="No images on Wikipedia page or incorrect Wikipedia page title.")
     else:
         return jsonify(images=image_urls)
 
