@@ -17,19 +17,21 @@ def home():
     return "<h1>Wikipedia Image Scraper</h1>"
 
 
-@app.route('/images/', methods = ['GET'])
+@app.route('api/images/', methods = ['GET'])
 def img_scraper():
     # check title supplied in query, set title variable to query param
     if 'title' in request.args:
         title = request.args['title']
     else:
-        return "Error: No Wikipedia page title provided."
+        return jsonify(noTitleError="Error: No Wikipedia page title provided."), 400
 
     # check if only returning first image, set count variable to 1
-    if 'ct' in request.args:
+    if 'main' in request.args and 'main' == 1:
         img_count = 1               # only obtaining main Wiki page image
+    elif 'main' in request.args and 'main' == 0:
+        img_count = None            # null variable to obtain all images
     else:
-        img_count = None               # null variable to obtain all images
+        return jsonify(noImageCt="'main' parameter no provided or invalid value")
 
     # scrape Wikipedia for images
     image_urls = []  # empty list to store scraped URLs
@@ -48,7 +50,7 @@ def img_scraper():
             return jsonify(images=url)
 
     if len(image_urls) == 0:                                    # no images on page
-        return "Error: No images on Wikipedia page."
+        return jsonify(noImagesError="No images on Wikipedia page.")
     else:
         return jsonify(images=image_urls)
 
