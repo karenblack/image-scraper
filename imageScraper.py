@@ -42,9 +42,9 @@ def img_scraper():
     wiki_page = 'https://en.wikipedia.org/wiki/' + title        # wiki page URL to scrape
     try:
         htmldata = requests.get(wiki_page).text                # query website and return html
-    except:
+    except requests.exceptions.RequestException as e:
         return jsonify(urlError="invalid Wikipedia page title")
-    
+
     soup = BeautifulSoup(htmldata, 'html.parser')               # parse html
 
     for item in soup.find_all('img'):
