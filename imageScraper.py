@@ -17,7 +17,7 @@ def home():
     return "<h1>Wikipedia Image Scraper</h1>"
 
 
-@app.route('api/images/', methods = ['GET'])
+@app.route('/api/images/', methods = ['GET'])
 def img_scraper():
     # check title supplied in query, set title variable to query param
     if 'title' in request.args:
