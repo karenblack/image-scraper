@@ -26,12 +26,15 @@ def img_scraper():
         return jsonify(noTitleError="Error: No Wikipedia page title provided."), 400
 
     # check if only returning first image, set count variable to 1
-    if 'main' in request.args and 'main' == 1:
-        img_count = 1               # only obtaining main Wiki page image
-    elif 'main' in request.args and 'main' == 0:
-        img_count = None            # null variable to obtain all images
+    if 'main' in request.args:
+        if 'main' == 1:
+            img_count = 1               # only obtaining main Wiki page image
+        elif 'main' == 0:
+            img_count = None            # null variable to obtain all images
+        else:
+            return jsonify(noImageCt="'main' parameter invalid value")
     else:
-        return jsonify(noImageCt="'main' parameter no provided or invalid value")
+        return jsonify(noImageCt="'main' parameter not provided")
 
     # scrape Wikipedia for images
     image_urls = []  # empty list to store scraped URLs
