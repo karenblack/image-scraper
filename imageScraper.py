@@ -48,7 +48,8 @@ def img_scraper():
     soup = BeautifulSoup(htmldata, 'html.parser')               # parse html
 
     for item in soup.find_all('img'):
-        url = item.get('src')                                   # get url of image
+        src = item.get('src')                                   # get url of image
+        url = 'https:' + src
 
         # get .img files not .svg as they are vector graphics
         if not re.search('.svg', url) and not re.search('/footer/', url) and not re.search('CentralAutoLogin', url):
