@@ -1,5 +1,5 @@
 # Author: Karen Black
-# Last Modified: May 6, 2021
+# Last Modified: May 14, 2021
 # Description: Image Scraper - scrapes images from Wikipedia and returns URLs of scraped images
 
 # import necessary modules
@@ -12,12 +12,12 @@ from flask import request, jsonify
 app = flask.Flask(__name__)
 
 
-@app.route('/', methods = ['GET'])
+@app.route('/', methods=['GET'])
 def home():
     return "<h1>Wikipedia Image Scraper</h1>"
 
 
-@app.route('/api/images/', methods = ['GET'])
+@app.route('/api/images/', methods=['GET'])
 def img_scraper():
     # check title supplied in query, set title variable to query param
     if 'title' in request.args:
@@ -27,10 +27,10 @@ def img_scraper():
 
     # check if only returning first image, set count variable to 1
     if 'ct' in request.args:
-        if request.args['ct'] == 'main':
-            img_count = 1               # only obtaining main Wiki page image
+        if request.args['ct'] == 'main' or request.args['ct'] == 'logo':
+            img_count = 1                               # only obtaining main Wiki page image
         elif request.args['ct'] == 'all':
-            img_count = None            # null variable to obtain all images
+            img_count = None                            # null variable to obtain all images
         else:
             return jsonify(noImageCt="'ct' parameter invalid value")
     else:
@@ -51,9 +51,17 @@ def img_scraper():
         src = item.get('src')                                   # get url of image
         url = 'https:' + src
 
-        # get .img files not .svg as they are vector graphics
-        if not re.search('.svg', url) and not re.search('/footer/', url) and not re.search('CentralAutoLogin', url):
-            image_urls.append(url)
+        # if only acquiring the team logo
+        if request.args['ct'] == 'logo':
+            alt = item.get('alt')
+            if re.search('logo', alt):
+                image_urls.append(url)
+            # if re.search('logo', url):
+            #     image_urls.append(url)
+        else:
+            # get .img files not .svg as they are vector graphics
+            if not re.search('.svg', url) and not re.search('/footer/', url) and not re.search('CentralAutoLogin', url):
+                image_urls.append(url)
         if img_count == 1 and len(image_urls) == 1:
             return jsonify(images=url)
 
