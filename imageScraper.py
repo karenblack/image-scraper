@@ -1,5 +1,5 @@
 # Author: Karen Black
-# Last Modified: May 14, 2021
+# Last Modified: May 15, 2021
 # Description: Image Scraper - scrapes images from Wikipedia and returns URLs of scraped images
 
 # import necessary modules
@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 import regex as re
 import flask
 from flask import request, jsonify
+from lxml import etree
 
 app = flask.Flask(__name__)
 
@@ -69,6 +70,28 @@ def img_scraper():
         return jsonify(noImagesError="No images on Wikipedia page or incorrect Wikipedia page title.")
     else:
         return jsonify(images=image_urls)
+
+
+@app.route('/api/infobox/', methods=['GET'])
+def info_box():
+    title = request.args['title']
+    url = 'https://en.wikipedia.org/wiki/' + title        # wiki page URL to scrape
+    req = requests.get(url)
+    store = etree.fromstring(req.text)
+
+    # get Established date
+    if request.args['fld'] == 'est':
+        output = store.xpath('//table[@class="infobox vcard"]/tbody/tr[th/text()="Established"]/td/text()')
+    # get Visitors
+    if request.args['fld'] == 'vis':
+        output = store.xpath('//table[@class="infobox vcard"]/tbody/tr[th/text()="Visitors"]/td/text()')
+    # Get NPS link
+    if request.args['fld'] == 'web':
+        output = store.xpath('//table[@class="infobox vcard"]/tbody/tr[th/text()="Website"]/td/a/@href')
+        print('******', output)
+
+    return jsonify(infobox=output[0])
+
 
 
 if __name__ == '__main__':
