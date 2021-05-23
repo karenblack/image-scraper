@@ -71,7 +71,7 @@ def img_scraper():
     else:
         return jsonify(images=image_urls)
 
-
+# my implementation of text-scraping Wiki text box for specific project implementation
 @app.route('/api/infobox/', methods=['GET'])
 def info_box():
     title = request.args['title']
