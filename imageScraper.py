@@ -1,5 +1,5 @@
 # Author: Karen Black
-# Last Modified: May 15, 2021
+# Last Modified: June 11, 2021
 # Description: Image Scraper - scrapes images from Wikipedia and returns URLs of scraped images
 
 # import necessary modules
