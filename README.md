@@ -1,5 +1,7 @@
 # Wiki-Image-Scraper
 
+**Note: API is no longer hosted on Heroku and is in the process of migrating to a new platform.** 
+
 API that scrapes image URLs from defined Wikipedia pages. Can return the main page image URL or a list of URLs for all images on the page. 
 
 - Main API endpoint: https://wiki-image-scraper.herokuapp.com/
